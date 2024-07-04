@@ -1,0 +1,266 @@
+anno,trappola,habitat,specie,n_sp
+2021,prato_ 1,prato,abax_contractus,5
+2021,prato_ 1,prato,amara_convexior,0
+2021,prato_ 1,prato,calathus_cinctus ,0
+2021,prato_ 1,prato,harpalus_rufipalpis_rufipalpis,0
+2021,prato_ 1,prato,harpalus_serripes_serripes,0
+2021,prato_ 1,prato,harpalus_subcylindricus,0
+2021,prato_ 1,prato,harpalus_tardus,0
+2021,prato_ 1,prato,metallina_lampros ,0
+2021,prato_ 1,prato,pseudoophonus _calceatus,0
+2021,prato_ 1,prato,pseudoophonus_griseus,0
+2021,prato_ 1,prato,carabus_germari_fiorii,1
+2021,prato_ 1,prato,pterostichus_micans,0
+2021,prato_ 2,prato,abax_contractus,0
+2021,prato_ 2,prato,amara_convexior,0
+2021,prato_ 2,prato,calathus_cinctus ,0
+2021,prato_ 2,prato,harpalus_rufipalpis_rufipalpis,1
+2021,prato_ 2,prato,harpalus_serripes_serripes,0
+2021,prato_ 2,prato,harpalus_subcylindricus,2
+2021,prato_ 2,prato,harpalus_tardus,0
+2021,prato_ 2,prato,metallina_lampros ,0
+2021,prato_ 2,prato,pseudoophonus _calceatus,0
+2021,prato_ 2,prato,pseudoophonus_griseus,0
+2021,prato_ 2,prato,pterostichus_micans,0
+2021,prato_ 3,prato,abax_contractus,0
+2021,prato_ 3,prato,amara_convexior,0
+2021,prato_ 3,prato,calathus_cinctus ,0
+2021,prato_ 3,prato,harpalus_rufipalpis_rufipalpis,1
+2021,prato_ 3,prato,harpalus_serripes_serripes,0
+2021,prato_ 3,prato,harpalus_subcylindricus,2
+2021,prato_ 3,prato,harpalus_tardus,1
+2021,prato_ 3,prato,metallina_lampros ,0
+2021,prato_ 3,prato,pseudoophonus _calceatus,1
+2021,prato_ 3,prato,pseudoophonus_griseus,0
+2021,prato_ 3,prato,pterostichus_micans,0
+2021,prato_ 4,prato,abax_contractus,1
+2021,prato_ 4,prato,amara_convexior,0
+2021,prato_ 4,prato,calathus_cinctus ,0
+2021,prato_ 4,prato,harpalus_rufipalpis_rufipalpis,0
+2021,prato_ 4,prato,harpalus_serripes_serripes,0
+2021,prato_ 4,prato,harpalus_subcylindricus,0
+2021,prato_ 4,prato,harpalus_tardus,0
+2021,prato_ 4,prato,metallina_lampros ,0
+2021,prato_ 4,prato,pseudoophonus _calceatus,0
+2021,prato_ 4,prato,pseudoophonus_griseus,0
+2021,prato_ 4,prato,pterostichus_micans,0
+2021,felci_1,felci,abax_contractus,2
+2021,felci_1,felci,amara_convexior,1
+2021,felci_1,felci,calathus_cinctus ,0
+2021,felci_1,felci,harpalus_rufipalpis_rufipalpis,21
+2021,felci_1,felci,harpalus_serripes_serripes,4
+2021,felci_1,felci,harpalus_subcylindricus,0
+2021,felci_1,felci,harpalus_tardus,9
+2021,felci_1,felci,metallina_lampros ,0
+2021,felci_1,felci,pseudoophonus _calceatus,2
+2021,felci_1,felci,pseudoophonus_griseus,0
+2021,felci_1,felci,pterostichus_micans,0
+2021,felci_2,felci,abax_contractus,3
+2021,felci_2,felci,amara_convexior,0
+2021,felci_2,felci,calathus_cinctus ,0
+2021,felci_2,felci,harpalus_rufipalpis_rufipalpis,8
+2021,felci_2,felci,harpalus_serripes_serripes,2
+2021,felci_2,felci,harpalus_subcylindricus,2
+2021,felci_2,felci,harpalus_tardus,7
+2021,felci_2,felci,metallina_lampros ,0
+2021,felci_2,felci,pseudoophonus _calceatus,0
+2021,felci_2,felci,pseudoophonus_griseus,1
+2021,felci_2,felci,pterostichus_micans,0
+2021,felci_3,felci,abax_contractus,0
+2021,felci_3,felci,amara_convexior,0
+2021,felci_3,felci,calathus_cinctus ,0
+2021,felci_3,felci,harpalus_rufipalpis_rufipalpis,1
+2021,felci_3,felci,harpalus_serripes_serripes,1
+2021,felci_3,felci,harpalus_subcylindricus,0
+2021,felci_3,felci,harpalus_tardus,0
+2021,felci_3,felci,metallina_lampros ,0
+2021,felci_3,felci,pseudoophonus _calceatus,2
+2021,felci_3,felci,pseudoophonus_griseus,0
+2021,felci_3,felci,pterostichus_micans,0
+2021,felci_4,felci,abax_contractus,0
+2021,felci_4,felci,amara_convexior,0
+2021,felci_4,felci,calathus_cinctus ,0
+2021,felci_4,felci,harpalus_rufipalpis_rufipalpis,0
+2021,felci_4,felci,harpalus_serripes_serripes,1
+2021,felci_4,felci,harpalus_subcylindricus,0
+2021,felci_4,felci,harpalus_tardus,0
+2021,felci_4,felci,metallina_lampros ,0
+2021,felci_4,felci,pseudoophonus _calceatus,1
+2021,felci_4,felci,pseudoophonus_griseus,0
+2021,felci_4,felci,pterostichus_micans,0
+2021,bosco_1,bosco,abax_contractus,9
+2021,bosco_1,bosco,amara_convexior,0
+2021,bosco_1,bosco,calathus_cinctus ,0
+2021,bosco_1,bosco,harpalus_rufipalpis_rufipalpis,0
+2021,bosco_1,bosco,harpalus_serripes_serripes,0
+2021,bosco_1,bosco,harpalus_subcylindricus,0
+2021,bosco_1,bosco,harpalus_tardus,0
+2021,bosco_1,bosco,metallina_lampros ,0
+2021,bosco_1,bosco,pseudoophonus _calceatus,0
+2021,bosco_1,bosco,pseudoophonus_griseus,0
+2021,bosco_1,bosco,pterostichus_micans,0
+2021,bosco_2,bosco,abax_contractus,7
+2021,bosco_2,bosco,amara_convexior,0
+2021,bosco_2,bosco,calathus_cinctus ,0
+2021,bosco_2,bosco,harpalus_rufipalpis_rufipalpis,0
+2021,bosco_2,bosco,harpalus_serripes_serripes,0
+2021,bosco_2,bosco,harpalus_subcylindricus,0
+2021,bosco_2,bosco,harpalus_tardus,0
+2021,bosco_2,bosco,metallina_lampros ,0
+2021,bosco_2,bosco,pseudoophonus _calceatus,0
+2021,bosco_2,bosco,pseudoophonus_griseus,0
+2021,bosco_2,bosco,pterostichus_micans,0
+2021,bosco_3,bosco,abax_contractus,7
+2021,bosco_3,bosco,amara_convexior,0
+2021,bosco_3,bosco,calathus_cinctus ,1
+2021,bosco_3,bosco,harpalus_rufipalpis_rufipalpis,0
+2021,bosco_3,bosco,harpalus_serripes_serripes,0
+2021,bosco_3,bosco,harpalus_subcylindricus,0
+2021,bosco_3,bosco,harpalus_tardus,0
+2021,bosco_3,bosco,metallina_lampros ,1
+2021,bosco_3,bosco,pseudoophonus _calceatus,0
+2021,bosco_3,bosco,pseudoophonus_griseus,0
+2021,bosco_3,bosco,pterostichus_micans,1
+2021,bosco_4,bosco,abax_contractus,0
+2021,bosco_4,bosco,amara_convexior,0
+2021,bosco_4,bosco,calathus_cinctus ,0
+2021,bosco_4,bosco,harpalus_rufipalpis_rufipalpis,0
+2021,bosco_4,bosco,harpalus_serripes_serripes,0
+2021,bosco_4,bosco,harpalus_subcylindricus,0
+2021,bosco_4,bosco,harpalus_tardus,0
+2021,bosco_4,bosco,metallina_lampros ,0
+2021,bosco_4,bosco,pseudoophonus _calceatus,0
+2021,bosco_4,bosco,pseudoophonus_griseus,0
+2021,bosco_4,bosco,pterostichus_micans,0
+2022,prato_ 1,prato,calathus_fuscipes_graecus,1
+2022,prato_ 1,prato,carabus_convexus_convexus ,0
+2022,prato_ 1,prato,pseudoophonus_rufipes ,0
+2022,prato_ 1,prato,pterostichus_micans ,0
+2022,prato_ 1,prato,abax_contractus,4
+2022,prato_ 1,prato,amara_convexior,0
+2022,prato_ 1,prato,harpalus_subcylindricus,0
+2022,prato_ 1,prato,harpalus_tardus,0
+2022,prato_ 1,prato,pseudoophonus _calceatus,0
+2022,prato_ 1,prato,pseudoophonus_griseus,1
+2022,prato_ 1,prato,amara_fulvipes,0
+2022,prato_ 2,prato,calathus_fuscipes_graecus,0
+2022,prato_ 2,prato,carabus_convexus_convexus ,0
+2022,prato_ 2,prato,pseudoophonus_rufipes ,4
+2022,prato_ 2,prato,pterostichus_micans ,0
+2022,prato_ 2,prato,abax_contractus,0
+2022,prato_ 2,prato,amara_convexior,0
+2022,prato_ 2,prato,harpalus_subcylindricus,0
+2022,prato_ 2,prato,harpalus_tardus,0
+2022,prato_ 2,prato,pseudoophonus _calceatus,4
+2022,prato_ 2,prato,pseudoophonus_griseus,2
+2022,prato_ 2,prato,amara_fulvipes,0
+2022,prato_ 3,prato,calathus_fuscipes_graecus,0
+2022,prato_ 3,prato,carabus_convexus_convexus ,0
+2022,prato_ 3,prato,pseudoophonus_rufipes ,1
+2022,prato_ 3,prato,pterostichus_micans ,0
+2022,prato_ 3,prato,abax_contractus,0
+2022,prato_ 3,prato,amara_convexior,0
+2022,prato_ 3,prato,harpalus_subcylindricus,1
+2022,prato_ 3,prato,harpalus_tardus,0
+2022,prato_ 3,prato,pseudoophonus _calceatus,0
+2022,prato_ 3,prato,pseudoophonus_griseus,0
+2022,prato_ 3,prato,amara_fulvipes,0
+2022,prato_ 4,prato,calathus_fuscipes_graecus,0
+2022,prato_ 4,prato,carabus_convexus_convexus ,1
+2022,prato_ 4,prato,pseudoophonus_rufipes ,0
+2022,prato_ 4,prato,pterostichus_micans ,0
+2022,prato_ 4,prato,abax_contractus,0
+2022,prato_ 4,prato,amara_convexior,0
+2022,prato_ 4,prato,harpalus_subcylindricus,0
+2022,prato_ 4,prato,harpalus_tardus,0
+2022,prato_ 4,prato,pseudoophonus _calceatus,0
+2022,prato_ 4,prato,pseudoophonus_griseus,0
+2022,prato_ 4,prato,amara_fulvipes,0
+2022,felci_1,felci,calathus_fuscipes_graecus,0
+2022,felci_1,felci,carabus_convexus_convexus ,0
+2022,felci_1,felci,pseudoophonus_rufipes ,0
+2022,felci_1,felci,pterostichus_micans ,0
+2022,felci_1,felci,abax_contractus,0
+2022,felci_1,felci,amara_convexior,1
+2022,felci_1,felci,harpalus_subcylindricus,0
+2022,felci_1,felci,harpalus_tardus,0
+2022,felci_1,felci,pseudoophonus _calceatus,0
+2022,felci_1,felci,pseudoophonus_griseus,2
+2022,felci_1,felci,amara_fulvipes,0
+2022,felci_2,felci,calathus_fuscipes_graecus,0
+2022,felci_2,felci,carabus_convexus_convexus ,0
+2022,felci_2,felci,pseudoophonus_rufipes ,1
+2022,felci_2,felci,pterostichus_micans ,0
+2022,felci_2,felci,abax_contractus,2
+2022,felci_2,felci,amara_convexior,0
+2022,felci_2,felci,harpalus_subcylindricus,0
+2022,felci_2,felci,harpalus_tardus,2
+2022,felci_2,felci,pseudoophonus _calceatus,0
+2022,felci_2,felci,pseudoophonus_griseus,0
+2022,felci_2,felci,amara_fulvipes,0
+2022,felci_3,felci,calathus_fuscipes_graecus,0
+2022,felci_3,felci,carabus_convexus_convexus ,0
+2022,felci_3,felci,pseudoophonus_rufipes ,0
+2022,felci_3,felci,pterostichus_micans ,0
+2022,felci_3,felci,abax_contractus,2
+2022,felci_3,felci,amara_convexior,0
+2022,felci_3,felci,harpalus_subcylindricus,0
+2022,felci_3,felci,harpalus_tardus,1
+2022,felci_3,felci,pseudoophonus _calceatus,0
+2022,felci_3,felci,pseudoophonus_griseus,0
+2022,felci_3,felci,amara_fulvipes,1
+2022,felci_4,felci,calathus_fuscipes_graecus,0
+2022,felci_4,felci,carabus_convexus_convexus ,0
+2022,felci_4,felci,pseudoophonus_rufipes ,0
+2022,felci_4,felci,pterostichus_micans ,0
+2022,felci_4,felci,abax_contractus,0
+2022,felci_4,felci,amara_convexior,0
+2022,felci_4,felci,harpalus_subcylindricus,0
+2022,felci_4,felci,harpalus_tardus,0
+2022,felci_4,felci,pseudoophonus _calceatus,0
+2022,felci_4,felci,pseudoophonus_griseus,0
+2022,felci_4,felci,amara_fulvipes,0
+2022,bosco_1,bosco,calathus_fuscipes_graecus,0
+2022,bosco_1,bosco,carabus_convexus_convexus ,0
+2022,bosco_1,bosco,pseudoophonus_rufipes ,0
+2022,bosco_1,bosco,pterostichus_micans ,0
+2022,bosco_1,bosco,abax_contractus,13
+2022,bosco_1,bosco,amara_convexior,0
+2022,bosco_1,bosco,harpalus_subcylindricus,0
+2022,bosco_1,bosco,harpalus_tardus,0
+2022,bosco_1,bosco,pseudoophonus _calceatus,0
+2022,bosco_1,bosco,pseudoophonus_griseus,0
+2022,bosco_1,bosco,amara_fulvipes,0
+2022,bosco_2,bosco,calathus_fuscipes_graecus,0
+2022,bosco_2,bosco,carabus_convexus_convexus ,1
+2022,bosco_2,bosco,pseudoophonus_rufipes ,0
+2022,bosco_2,bosco,pterostichus_micans ,0
+2022,bosco_2,bosco,abax_contractus,5
+2022,bosco_2,bosco,amara_convexior,0
+2022,bosco_2,bosco,harpalus_subcylindricus,0
+2022,bosco_2,bosco,harpalus_tardus,0
+2022,bosco_2,bosco,pseudoophonus _calceatus,0
+2022,bosco_2,bosco,pseudoophonus_griseus,0
+2022,bosco_2,bosco,amara_fulvipes,0
+2022,bosco_3,bosco,calathus_fuscipes_graecus,0
+2022,bosco_3,bosco,carabus_convexus_convexus ,0
+2022,bosco_3,bosco,pseudoophonus_rufipes ,0
+2022,bosco_3,bosco,pterostichus_micans ,2
+2022,bosco_3,bosco,abax_contractus,2
+2022,bosco_3,bosco,amara_convexior,0
+2022,bosco_3,bosco,harpalus_subcylindricus,0
+2022,bosco_3,bosco,harpalus_tardus,0
+2022,bosco_3,bosco,pseudoophonus _calceatus,0
+2022,bosco_3,bosco,pseudoophonus_griseus,0
+2022,bosco_3,bosco,amara_fulvipes,0
+2022,bosco_4,bosco,calathus_fuscipes_graecus,0
+2022,bosco_4,bosco,carabus_convexus_convexus ,0
+2022,bosco_4,bosco,pseudoophonus_rufipes ,0
+2022,bosco_4,bosco,pterostichus_micans ,0
+2022,bosco_4,bosco,abax_contractus,0
+2022,bosco_4,bosco,amara_convexior,0
+2022,bosco_4,bosco,harpalus_subcylindricus,0
+2022,bosco_4,bosco,harpalus_tardus,0
+2022,bosco_4,bosco,pseudoophonus _calceatus,0
+2022,bosco_4,bosco,pseudoophonus_griseus,0
+2022,bosco_4,bosco,amara_fulvipes,0
