@@ -1,2 +1,1 @@
-# DataIsFunny
-#
+# Carabids are great! 🪲
