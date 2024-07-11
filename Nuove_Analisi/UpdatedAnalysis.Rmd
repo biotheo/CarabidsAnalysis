@@ -13,6 +13,8 @@ CLL <- read.csv("Colloro_DB.csv")
 library(dplyr)
 library(ggplot2)
 library(vegan)
+library(tidyr)
+
 ```
 
 ## Data
@@ -22,6 +24,17 @@ Here's the dataset used to perform the subsequent analysis:
 - [Link_1](https://www.google.it)
 - [Link_2](https://www.google.it)
 - [Link_3](https://www.google.it)
+
+## Sex ratio
+```{r message=FALSE, warning=FALSE}
+sexdLL<- read.csv("Sesso_Colloro.csv")
+sexdSS<- read.csv("Sesso_Cossogno.csv")
+
+sexRatioLL<-sum(sexdLL$m)/sum(sexdLL$f)
+sexRatioSS<-sum(sexdSS$m)/sum(sexdSS$f)
+
+print(cat("Colloro M/F sex ratio: ", sexRatioLL, " | ", "Cossogno M/F sex ratio: ", sexRatioSS))
+```
 
 ## Activity Density
 
@@ -256,7 +269,7 @@ SH_CLL_plot <- ggplot(dfSH_CLL, aes(x = Habitat, y = Shannon, color = as.factor(
   labs(title = "(A)", x = "", y = "Shannon-Wiener index (H')", color = "Year") +
   theme_classic() +  # Cambiamo il tema a classic per avere uno sfondo bianco
   theme(
-    text = element_text(family = "Arial", size = 25),
+    text = element_text(family = "Arial", size = 20),
     panel.grid = element_blank(),  # Togliamo le griglie
     panel.background = element_rect(fill = "white")  # Sfondo bianco
   )
@@ -271,10 +284,10 @@ dfSH_CSS <- data.frame(Habitat = rep(habitatCSS, 2),
 SH_CSS_plot <- ggplot(dfSH_CSS, aes(x = Habitat, y = Shannon, color = as.factor(Year))) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.65), fill = NA, width = 0.5) +
   scale_color_manual(values = c("2021" = "#33cc33", "2022" = "#0033cc")) +
-  labs(title = "(A)", x = "", y = "Shannon-Wiener index (H')", color = "Year") +
+  labs(title = "(C)", x = "", y = "Shannon-Wiener index (H')", color = "Year") +
   theme_classic() +  # Cambiamo il tema a classic per avere uno sfondo bianco
   theme(
-    text = element_text(family = "Arial", size = 25),
+    text = element_text(family = "Arial", size = 20),
     panel.grid = element_blank(),  # Togliamo le griglie
     panel.background = element_rect(fill = "white")  # Sfondo bianco
   )
@@ -305,7 +318,7 @@ SP_CLL_plot <- ggplot(dfSP_CLL, aes(x = Habitat, y = Simpson, color = as.factor(
   labs(title = "(B)", x = "", y = "Simpson index (D)", color = "Year") +
   theme_classic() +  # Cambiamo il tema a classic per avere uno sfondo bianco
   theme(
-    text = element_text(family = "Arial", size = 25),
+    text = element_text(family = "Arial", size = 20),
     panel.grid = element_blank(),  # Togliamo le griglie
     panel.background = element_rect(fill = "white")  # Sfondo bianco
   )
@@ -320,10 +333,10 @@ dfSP_CSS <- data.frame(Habitat = rep(habitatCSS, 2),
 SP_CSS_plot <- ggplot(dfSP_CSS, aes(x = Habitat, y = Simpson, color = as.factor(Year))) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.65), fill = NA, width = 0.5) +
   scale_color_manual(values = c("2021" = "#33cc33", "2022" = "#0033cc")) +
-  labs(title = "(B)", x = "", y = "Simpson index (D)", color = "Year") +
+  labs(title = "(D)", x = "", y = "Simpson index (D)", color = "Year") +
   theme_classic() +  # Cambiamo il tema a classic per avere uno sfondo bianco
   theme(
-    text = element_text(family = "Arial", size = 25),
+    text = element_text(family = "Arial", size = 20),
     panel.grid = element_blank(),  # Togliamo le griglie
     panel.background = element_rect(fill = "white")  # Sfondo bianco
   )
@@ -343,59 +356,699 @@ SP_CSS_plot
 Non-metric multidimensional scaling (euclidean distances)
 
 ```{r message=FALSE, warning=FALSE}
-NMDS_Colloro_x_R<-read.csv("CLL_NMDS.csv")
+# Read in your data
+NMDS_Colloro_x_R <- read.csv("CLL_NMDS.csv")
 
-#Dividere il file in due dataset, 1 con il numero delle specie e uno con habitat e numero della trappola
-data_1_CLL<-NMDS_Colloro_x_R[,3:18]
-data_2_CLL<-NMDS_Colloro_x_R[,1:2]
+# Divide the file into two datasets, one with species numbers and one with habitat and trap number
+data_1_CLL <- NMDS_Colloro_x_R[,3:18]
+data_2_CLL <- NMDS_Colloro_x_R[,1:2]
 
+# Perform NMDS
+NMDS_CLL <- metaMDS(data_1_CLL, distance="euclidean", k=2)
 
-NMDS_CLL<-metaMDS(data_1_CLL, distance="euclidean", k=2)
+# Extract NMDS scores (the coordinates) and combine with metadata
+nmds_scores_CLL <- as.data.frame(scores(NMDS_CLL, display = "sites"))
+nmds_data_CLL <- cbind(data_2_CLL, nmds_scores_CLL)
 
-#Grafico solo con punti colorati
-ggplot(data_2_CLL, aes(x = NMDS_CLL$points[,1], y = NMDS_CLL$points[,2], color = habitat, shape = habitat)) +
+# Function to calculate convex hull for each group
+find_hull_CLL <- function(df_CLL) df_CLL[chull(df_CLL$NMDS1, df_CLL$NMDS2), ]
+
+# Calculate convex hull for each habitat
+hulls_CLL <- nmds_data_CLL %>% group_by(habitat) %>% do(find_hull_CLL(.))
+
+# ggplot(data_2_CLL, aes(x = NMDS_CLL$points[,1], y = NMDS_CLL$points[,2], color = habitat, shape = habitat)) +
+#   geom_point(size = 2) +
+#   labs(title = "", x = "NMDS1", y = "NMDS2", color = "Habitat", shape = "Habitat") +
+# theme_classic() +
+#   theme(
+#     text = element_text(family = "Arial", size = 20),
+#     panel.grid = element_blank(),  # Remove grid lines
+#     panel.background = element_rect(fill = "white")  # White background
+#   )
+
+# Plot NMDS with ggplot2
+ggplot(nmds_data_CLL, aes(x = NMDS1, y = NMDS2, fill = habitat, color = habitat)) +
   geom_point(size = 2) +
-  labs(title = "(A)", x = "Axis 1", y = "Axis 2", color = "Habitat", shape = "Habitat") +
-  theme_classic() +
-  theme(text = element_text(family = "Arial", size = 25))
-
-# Grafico con poligoni colorati intorno ai punti
-ggplot(data_2_CLL, aes(x = NMDS_CLL$points[,1], y = NMDS_CLL$points[,2], fill = habitat, color = habitat)) +
-  geom_point(size = 2) +
-  geom_polygon(data = data_2_CLL, aes(x = NMDS_CLL$points[,1], y = NMDS_CLL$points[,2], fill = habitat, color = habitat), alpha = 0.3) +
-  labs(title = "(B)", x = " ", y = " ", color = "Habitat", shape = "Habitat") +
-  theme_classic() + 
+  geom_polygon(data = hulls_CLL, aes(x = NMDS1, y = NMDS2, fill = habitat, color = habitat), alpha = 0.3) +
+  labs(title = "", x = "NMDS1", y = "NMDS2", color = "Habitat", fill = "Habitat") +
+theme_classic() +
   theme(
-    text = element_text(family = "Arial", size = 25),
-    panel.grid = element_blank(),  # Togliamo le griglie
-    panel.background = element_rect(fill = "white")  # Sfondo bianco
+    text = element_text(family = "Arial", size = 20),
+    panel.grid = element_blank(),  # Remove grid lines
+    panel.background = element_rect(fill = "white")  # White background
   )
+
 ```
 
 ```{r message=FALSE, warning=FALSE}
-NMDS_Cossogno_x_R<-read.csv("CSS_NMDS.csv")
+# Read in your data
+NMDS_Cossogno_x_R <- read.csv("CSS_NMDS.csv")
 
-#Dividere il file in due dataset, 1 con il numero delle specie e uno con habitat e numero della trappola
-data_1_CSS<-NMDS_Cossogno_x_R[,3:31]
-data_2_CSS<-NMDS_Cossogno_x_R[,1:2]
+# Divide the file into two datasets, one with species numbers and one with habitat and trap number
+data_1_CSS <- NMDS_Cossogno_x_R[,3:31]
+data_2_CSS <- NMDS_Cossogno_x_R[,1:2]
 
+# Perform NMDS
+NMDS_CSS <- metaMDS(data_1_CSS, distance = "bray", k = 2)
 
-NMDS_CSS<-metaMDS(data_1_CSS, distance="euclidean", k=2)
+# Extract NMDS scores for sites (the coordinates) and combine with metadata
+nmds_scores_CSS <- as.data.frame(scores(NMDS_CSS, display = "sites"))
+nmds_data_CSS <- cbind(data_2_CSS, nmds_scores_CSS)
 
-#Grafico solo con punti colorati
-ggplot(data_2_CSS, aes(x = NMDS_CSS$points[,1], y = NMDS_CSS$points[,2], color = habitat, shape = habitat)) +
+# Rename the NMDS columns for clarity
+names(nmds_data_CSS)[3:4] <- c("NMDS1", "NMDS2")
+
+# Function to calculate convex hull for each group
+find_hull_CSS <- function(df) df[chull(df$NMDS1, df$NMDS2), ]
+
+# Calculate convex hull for each habitat
+hulls_CSS <- nmds_data_CSS %>% group_by(habitat) %>% do(find_hull_CSS(.))
+
+# Plot NMDS with ggplot2 (points only)
+# ggplot(nmds_data_CSS, aes(x = NMDS1, y = NMDS2, color = habitat, shape = habitat)) +
+#   geom_point(size = 2) +
+#   labs(title = "", x = "NMDS1", y = "NMDS2", color = "Habitat", shape = "Habitat") +
+# theme_classic() +
+#   theme(
+#     text = element_text(family = "Arial", size = 20),
+#     panel.grid = element_blank(),  # Remove grid lines
+#     panel.background = element_rect(fill = "white")  # White background
+#   )
+
+# Plot NMDS with ggplot2 (points and convex hull polygons)
+ggplot(nmds_data_CSS, aes(x = NMDS1, y = NMDS2, fill = habitat, color = habitat)) +
   geom_point(size = 2) +
-  labs(title = "(A)", x = "Axis 1", y = "Axis 2", color = "Habitat", shape = "Habitat") +
-  theme_classic() +
-  theme(text = element_text(family = "Arial", size = 20))
+  geom_polygon(data = hulls_CSS, aes(x = NMDS1, y = NMDS2, fill = habitat, color = habitat), alpha = 0.3) +
+  labs(title = "", x = "NMDS1", y = "NMDS2", color = "Habitat", shape = "Habitat") +
+theme_classic() +
+  theme(
+    text = element_text(family = "Arial", size = 20),
+    panel.grid = element_blank(),  # Remove grid lines
+    panel.background = element_rect(fill = "white")  # White background
+  ) + 
+  guides(color = guide_legend("Habitat"), fill = guide_legend("Habitat"))
+```
 
-# Grafico con poligoni colorati intorno ai punti
-ggplot(data_2_CSS, aes(x = NMDS_CSS$points[,1], y = NMDS_CSS$points[,2], color = habitat, shape = habitat)) +
- geom_point(size = 2) +
- geom_polygon(data = data_2_CSS, aes(x = NMDS_CSS$points[,1], y = NMDS_CSS$points[,2], group = habitat, fill = habitat), alpha = 0.2) +
- labs(title = "(B)", x = " ", y = " ", color = "Habitat", shape = "Habitat") +
- theme_minimal() +
- theme(text = element_text(family = "Arial", size = 20))
+## Community's Dominance Structure 
+
+Colloro Community's Dominance Structure, divided by habitat type
+
+```{r message=FALSE, warning=FALSE}
+Colloro_DB <- read.csv("Colloro_DB.csv")
+
+# Calcola le percentuali delle specie per habitat per l'anno 2021
+data_2021_CLL <- Colloro_DB %>%
+  filter(anno == 2021) %>%
+  group_by(habitat, specie) %>%
+  summarise(total_n_sp = sum(n_sp), .groups = 'drop') %>%
+  group_by(habitat) %>%
+  mutate(percentage = total_n_sp / sum(total_n_sp) * 100)
+
+# Visualizza le percentuali per il 2021
+print(data_2021_CLL)
+
+# Calcola le percentuali delle specie per habitat per l'anno 2022
+data_2022_CLL <- Colloro_DB %>%
+  filter(anno == 2022) %>%
+  group_by(habitat, specie) %>%
+  summarise(total_n_sp = sum(n_sp), .groups = 'drop') %>%
+  group_by(habitat) %>%
+  mutate(percentage = total_n_sp / sum(total_n_sp) * 100)
+
+# Visualizza le percentuali per il 2022
+print(data_2022_CLL)
+```
+
+Cossogno Community's Dominance Structure, divided by habitat type.
+
+```{r message=FALSE, warning=FALSE}
+#Carico file Cossogno_DB
+Cossogno_DB <- read.csv("Cossogno_DB.csv")
+
+# Calcola le percentuali delle specie per habitat per l'anno 2021
+data_2021_CSS <- Cossogno_DB %>%
+  filter(anno == 2021) %>%
+  group_by(habitat, specie) %>%
+  summarise(total_n_sp = sum(n_sp), .groups = 'drop') %>%
+  group_by(habitat) %>%
+  mutate(percentage = total_n_sp / sum(total_n_sp) * 100)
+
+# Visualizza le percentuali per il 2021
+print(data_2021_CSS)
+
+# Calcola le percentuali delle specie per habitat per l'anno 2022
+data_2022_CSS <- Cossogno_DB %>%
+  filter(anno == 2022) %>%
+  group_by(habitat, specie) %>%
+  summarise(total_n_sp = sum(n_sp), .groups = 'drop') %>%
+  group_by(habitat) %>%
+  mutate(percentage = total_n_sp / sum(total_n_sp) * 100)
+
+# Visualizza le percentuali per il 2022
+print(data_2022_CSS)
+```
+
+**Colloro** Community's Dominance Structure, **without** considering the habitat type
+
+```{r message=FALSE, warning=FALSE}
+# Carico file Colloro_DB
+Colloro_DB <- read.csv("Colloro_DB.csv")
+
+# Dividi i dati per anno
+data_2021_CLL_TOT <- Colloro_DB %>% filter(anno == 2021)
+data_2022_CLL_TOT <- Colloro_DB %>% filter(anno == 2022)
+
+# Conta le occorrenze delle specie per ogni anno
+species_count_2021_CLL <- data_2021_CLL_TOT %>% group_by(specie) %>% summarise(count = sum(n_sp))
+species_count_2022_CLL <- data_2022_CLL_TOT %>% group_by(specie) %>% summarise(count = sum(n_sp))
+
+# Calcola la percentuale di presenza per ogni specie per l'anno 2021
+total_2021_CLL <- sum(species_count_2021_CLL$count)
+species_count_2021_CLL <- species_count_2021_CLL %>%
+  mutate(Percentuale = count / total_2021_CLL * 100)
+
+# Calcola la percentuale di presenza per ogni specie per l'anno 2022
+total_2022_CLL <- sum(species_count_2022_CLL$count)
+species_count_2022_CLL <- species_count_2022_CLL %>%
+  mutate(Percentuale = count / total_2022_CLL * 100)
+
+# Visualizza i risultati
+print(species_count_2021_CLL, n= Inf)
+print(species_count_2022_CLL, n= Inf)
+```
+
+Cossogno Community's Dominance Structure, without considering the habitat type
+
+```{r message=FALSE, warning=FALSE}
+# Dividi i dati per anno
+data_2021_CSS_TOT <- Cossogno_DB %>% filter(anno == 2021)
+data_2022_CSS_TOT <- Cossogno_DB %>% filter(anno == 2022)
+
+# Conta le occorrenze delle specie per ogni anno
+species_count_2021_CSS <- data_2021_CSS_TOT %>% group_by(specie) %>% summarise(count = sum(n_sp))
+species_count_2022_CSS <- data_2022_CSS_TOT %>% group_by(specie) %>% summarise(count = sum(n_sp))
+
+# Calcola la percentuale di presenza per ogni specie per l'anno 2021
+total_2021_CSS <- sum(species_count_2021_CSS$count)
+species_count_2021_CSS <- species_count_2021_CSS %>%
+  mutate(Percentuale = count / total_2021_CSS * 100)
+
+# Calcola la percentuale di presenza per ogni specie per l'anno 2022
+total_2022_CSS <- sum(species_count_2022_CSS$count)
+species_count_2022_CSS <- species_count_2022_CSS %>%
+  mutate(Percentuale = count / total_2022_CSS * 100)
+
+# Visualizza i risultati
+print(species_count_2021_CSS, n= Inf)
+print(species_count_2022_CSS, n= Inf)
+```
+
+## Dominance tables and plots
+
+Dominance classes: **Colloro**
+
+```{r message=FALSE, warning=FALSE}
+# Calcolo le 5 classi di dominanza per il 2021 di Colloro - uso il DF species_count_2021_CLL
+
+# Definizione delle categorie in base alla percentuale
+dominance_CLL_21 <- species_count_2021_CLL %>%
+  mutate(Categoria = case_when(
+    Percentuale > 10 ~ "Eudominants",
+    Percentuale > 5 & Percentuale <= 10 ~ "Dominants",
+    Percentuale > 2 & Percentuale <= 5 ~ "Subdominants",
+    Percentuale > 1 & Percentuale <= 2 ~ "Recedents",
+    Percentuale <= 1 ~ "Subrecedents"
+  ))
+
+dominance_CLL_21$Categoria <- factor(dominance_CLL_21$Categoria, levels = c("Eudominants", "Dominants", "Subdominants", "Recedents", "Subrecedents"))
+
+# Conto delle specie in ciascuna categoria
+dominance_count_CLL_21 <- dominance_CLL_21 %>% count(Categoria)
+
+# Visualizza i risultati
+print(dominance_count_CLL_21)
+
+# Calcolo le 5 classi di dominanza per il 2022 di Colloro - uso il DF species_count_2022_CLL
+
+# Definizione delle categorie in base alla percentuale
+dominance_CLL_22 <- species_count_2022_CLL %>%
+  mutate(Categoria = case_when(
+    Percentuale > 10 ~ "Eudominants", 
+    Percentuale > 5 & Percentuale <= 10 ~ "Dominants",
+    Percentuale > 2 & Percentuale <= 5 ~ "Subdominants",
+    Percentuale > 1 & Percentuale <= 2 ~ "Recedents",
+    Percentuale <= 1 ~ "Subrecedents"
+  ))
+
+dominance_CLL_22$Categoria <- factor(dominance_CLL_22$Categoria, levels = c("Eudominants", "Dominants", "Subdominants", "Recedents", "Subrecedents"))
+
+# Conto delle specie in ciascuna categoria
+dominance_count_CLL_22 <- dominance_CLL_22 %>% count(Categoria)
+
+# Visualizza i risultati
+print(dominance_count_CLL_22)
+```
+
+Dominance classes: **Colloro**
+
+```{r message=FALSE, warning=FALSE}
+# Calcolo le 5 classi di dominanza per il 2021 di Cossogno - uso il DF species_count_2021_CSS
+
+# Definizione delle categorie in base alla percentuale
+  dominance_CSS_21 <- species_count_2021_CSS %>%
+  mutate(Categoria = case_when(
+    Percentuale > 10 ~ "Eudominants",
+    Percentuale > 5 & Percentuale <= 10 ~ "Dominants",
+    Percentuale > 2 & Percentuale <= 5 ~ "Subdominants",
+    Percentuale > 1 & Percentuale <= 2 ~ "Recedents",
+    Percentuale <= 1 ~ "Subrecedents"
+  ))
+
+dominance_CSS_21$Categoria <- factor(dominance_CSS_21$Categoria, levels = c("Eudominants", "Dominants", "Subdominants", "Recedents", "Subrecedents"))
+
+# Conto delle specie in ciascuna categoria
+dominance_count_CSS_21 <- dominance_CSS_21 %>% count(Categoria)
+
+# Visualizza i risultati
+print(dominance_count_CSS_21)
+
+# Calcolo le 5 classi di dominanza per il 2022 di Cossogno - uso il DF species_count_2022_CSS
+
+# Definizione delle categorie in base alla percentuale
+dominance_CSS_22 <- species_count_2022_CSS %>%
+  mutate(Categoria = case_when(
+    Percentuale > 10 ~ "Eudominants",
+    Percentuale > 5 & Percentuale <= 10 ~ "Dominants",
+    Percentuale > 2 & Percentuale <= 5 ~ "Subdominants",
+    Percentuale > 1 & Percentuale <= 2 ~ "Recedents",
+    Percentuale <= 1 ~ "Subrecedents"
+  ))
+
+dominance_CSS_22$Categoria <- factor(dominance_CSS_22$Categoria, levels = c("Eudominants", "Dominants", "Subdominants", "Recedents", "Subrecedents"))
+
+# Conto delle specie in ciascuna categoria
+dominance_count_CSS_22 <- dominance_CSS_22 %>% count(Categoria)
+
+# Visualizza i risultati
+print(dominance_count_CSS_22)
+
+```
+
+```{r message=FALSE, warning=FALSE}
+torta_CLL_21 <- dominance_count_CLL_21 %>%
+  mutate(Percentuale = n / sum(n) * 100,
+         Label = paste0(Categoria, " (", round(Percentuale, 1), "%)"))
+
+torta_CLL_21$Label <- factor(torta_CLL_21$Label, levels = paste0(c("Eudominants", "Subrecedents"), " (", round(torta_CLL_21$Percentuale, 1), "%)"))
+
+# Definisci i colori personalizzati
+custom_colors <- c("#003366", "#006699", "#99FFFF")
+
+# Crea il grafico a torta
+ggplot(torta_CLL_21, aes(x = "", y = n, fill = Categoria)) +
+  geom_bar(width = 1, stat = "identity", color = "black") +
+  coord_polar("y", start = 0) +
+  scale_fill_manual(values = custom_colors, labels = paste0(c("Eudominants", "Dominants", "Subrecedents"), " (", round(torta_CLL_21$Percentuale, 1), "%)")) +
+  theme_void() +
+  theme(legend.position = "right") +
+  theme(legend.position = "right",
+        text = element_text(family = "arial", size = 20)) +
+  labs(title = "(A)", fill = "Legend")
+
+  # Colloro 2022
+  # Uso dominance_count_CLL_22
+
+# Aggiungi una colonna con le etichette di percentuale
+torta_CLL_22 <- dominance_count_CLL_22 %>%
+  mutate(Percentuale = n / sum(n) * 100,
+         Label = paste0(Categoria, " (", round(Percentuale, 1), "%)"))
+
+torta_CLL_22$Label <- factor(torta_CLL_22$Label, levels = paste0(c("Eudominants", "Dominants", "Subdominants", "Recedents", "Subrecedents"), " (", round(torta_CLL_22$Percentuale, 1), "%)"))
+
+# Definisci i colori personalizzati
+custom_colors <- c("#003366", "#006699", "#3399CC", "#66CCFF", "#99FFFF")
+
+# Crea il grafico a torta
+ggplot(torta_CLL_22, aes(x = "", y = n, fill = Categoria)) +
+  geom_bar(width = 1, stat = "identity", color = "black") +
+  coord_polar("y", start = 0) +
+  scale_fill_manual(values = custom_colors, labels = paste0(c("Eudominants", "Dominants", "Subdominants", "Recedents", "Subrecedents"), " (", round(torta_CLL_22$Percentuale, 1), "%)")) +
+  theme_void() +
+  theme(legend.position = "right") +
+  theme(legend.position = "right",
+        text = element_text(family = "arial", size = 20)) +
+  labs(title = "(B)", fill = "Legend")
+```
+
+```{r message=FALSE, warning=FALSE}
+ torta_CSS_21 <- dominance_count_CSS_21 %>%
+  mutate(Percentuale_CSS21 = n / sum(n) * 100,
+         Label = paste0(Categoria, " (", round(Percentuale_CSS21, 1), "%)"))
+
+torta_CSS_21$Label_CSS21 <- factor(torta_CSS_21$Label, levels = paste0(c("Eudominants", "Subdominants", "Recedents", "Subrecedents"), " (", round(torta_CSS_21$Percentuale_CSS21, 1), "%)"))
+
+# Definisci i colori personalizzati
+custom_colors <- c("#003366", "#3399CC", "#66CCFF", "#99FFFF")
+
+# Crea il grafico a torta
+ggplot(torta_CSS_21, aes(x = "", y = n, fill = Categoria)) +
+  geom_bar(width = 1, stat = "identity", color = "black") +
+  coord_polar("y", start = 0) +
+  scale_fill_manual(values = custom_colors, labels = paste0(c("Eudominants", "Subdominants", "Recedents", "Subrecedents"), " (", round(torta_CSS_21$Percentuale_CSS21, 1), "%)")) +
+  theme_void() +
+  theme(legend.position = "right") + 
+  theme(legend.position = "right",
+        text = element_text(family = "arial", size = 20)) +
+  labs(title = "(C)", fill = "Legend")
+
+
+
+  # Cossogno 2022
+  # Uso dominance_count_CSS_22
+
+  # Aggiungi una colonna con le etichette di percentuale
+torta_CSS_22 <- dominance_count_CSS_22 %>%
+  mutate(Percentuale_CSS22 = n / sum(n) * 100,
+         Label = paste0(Categoria, " (", round(Percentuale_CSS22, 1), "%)"))
+
+# Ordinare la colonna 'Label' secondo l'ordine specificato
+torta_CSS_22$Label_CSS22 <- factor(torta_CSS_22$Label, levels = paste0(c("Eudominants", "Dominants", "Subdominants", "Recedents", "Subrecedents"), " (", round(torta_CSS_22$Percentuale_CSS22, 1), "%)"))
+
+# Definisci i colori personalizzati
+custom_colors <- c("#003366", "#006699", "#3399CC", "#66CCFF", "#99FFFF")
+
+# Crea il grafico a torta
+ggplot(torta_CSS_22, aes(x = "", y = n, fill = Categoria)) +
+  geom_bar(width = 1, stat = "identity", color = "black") +
+  coord_polar("y", start = 0) +
+  scale_fill_manual(values = custom_colors, labels = paste0(c("Eudominants", "Dominants", "Subdominants", "Recedents", "Subrecedents"), " (", round(torta_CSS_22$Percentuale_CSS22, 1), "%)")) +
+  theme_void() +
+  theme(legend.position = "right",
+        text = element_text(family = "arial", size = 20)) +
+  labs(title = "(D)", fill = "Legend")
+```
+
+
+
+```{r message=FALSE, warning=FALSE}
+# PCA COLLORO
+
+# install.packages("corrr")
+library('corrr')
+
+# install.packages("ggcorrplot")
+library(ggcorrplot)
+
+# install.packages("FactoMineR")
+library("FactoMineR")
+
+dh1<-read.csv("CLL_NMDS.csv")
+dh1 <- dh1 %>%
+  group_by(habitat) %>%
+  summarise(across(everything(), sum))
+
+numerical_data <- dh1[,3:18]
+
+head(numerical_data)
+
+data_normalized <- scale(numerical_data)
+head(data_normalized)
+
+data.pca <- prcomp(data_normalized)
+summary(data.pca)
+
+data.pca$loadings[, 1:2]
+
+
+# install.packages("factoextra")
+library("factoextra")
+
+fviz_eig(data.pca, addlabels = TRUE)
+
+# Graph of the variables
+fviz_pca_var(data.pca, col.var = "red")
+
+fviz_pca_var(data.pca, col.var = "cos2",
+             gradient.cols = c("black", "orange", "green"),
+             repel = TRUE)
+
+
+
+### 
+numerical_data_t<-t(numerical_data)
+data<-numerical_data_t
+# Eseguire PCA
+pca <- prcomp(data, scale. = TRUE)
+
+# Estrarre le coordinate dei variabili (habitat)
+habitat_coords <- as.data.frame(pca$rotation[, 1:2])
+habitat_coords$habitat <- c("Ferns", "Forest", "Grassland")  # Nomi degli habitat
+
+# Visualizzare il biplot delle specie e degli habitat
+biplot <- fviz_pca_biplot(pca, 
+                          geom.ind = "point", # Mostra le specie come punti
+                          col.ind = "blue",   # Colore delle specie
+                          pointshape = 21,    # Forma dei punti
+                          pointsize = 2,      # Dimensione dei punti
+                          fill.ind = "blue",  # Riempimento dei punti
+                          repel = TRUE,       # Evita la sovrapposizione delle etichette
+                          geom.var = "arrow", # Mostra gli habitat come frecce
+                          col.var = habitat_coords$habitat, # Colore delle frecce basato sugli habitat
+                          legend.title = list(color = "Habitat")) +
+  theme_minimal() +
+  labs(title = "PCA Biplot",
+       x = paste0("Dim1 (", round(pca$sdev[1]^2/sum(pca$sdev^2) * 100, 1), "%)"),
+       y = paste0("Dim2 (", round(pca$sdev[2]^2/sum(pca$sdev^2) * 100, 1), "%)"))
+
+# Aggiungere le etichette dei variabili (habitat)
+biplot + geom_text(data = habitat_coords, aes(x = PC1, y = PC2, label = habitat), 
+                   color = "black", 
+                   vjust = -1, 
+                   hjust = -0.5) +
+  scale_color_manual(values = c("Ferns" = "green", "Forest" = "brown", "Grassland" = "orange"))
+
+```
+
+```{r message=FALSE, warning=FALSE}
+# PCA COSSOGNO
+
+dh2<-read.csv("CSS_NMDS.csv")
+dh2 <- dh2 %>%
+  group_by(habitat) %>%
+  summarise(across(everything(), sum))
+
+numerical_data <- dh2[,3:31]
+
+head(numerical_data)
+
+data_normalized <- scale(numerical_data)
+head(data_normalized)
+
+data.pca <- prcomp(data_normalized)
+summary(data.pca)
+
+data.pca$loadings[, 1:2]
+
+
+# install.packages("factoextra")
+library("factoextra")
+
+fviz_eig(data.pca, addlabels = TRUE)
+
+# Graph of the variables
+fviz_pca_var(data.pca, col.var = "red")
+
+fviz_pca_var(data.pca, col.var = "cos2",
+             gradient.cols = c("black", "orange", "green"),
+             repel = TRUE)
+
+
+
+### 
+numerical_data_t<-t(numerical_data)
+data<-numerical_data_t
+# Eseguire PCA
+pca <- prcomp(data, scale. = TRUE)
+
+# Estrarre le coordinate dei variabili (habitat)
+habitat_coords <- as.data.frame(pca$rotation[, 1:2])
+habitat_coords$habitat <- c("Chersnut Grove", "Ecotone", "Grassland")  # Nomi degli habitat
+
+# Visualizzare il biplot delle specie e degli habitat
+biplot <- fviz_pca_biplot(pca, 
+                          geom.ind = "point", # Mostra le specie come punti
+                          col.ind = "blue",   # Colore delle specie
+                          pointshape = 21,    # Forma dei punti
+                          pointsize = 2,      # Dimensione dei punti
+                          fill.ind = "blue",  # Riempimento dei punti
+                          repel = TRUE,       # Evita la sovrapposizione delle etichette
+                          geom.var = "arrow", # Mostra gli habitat come frecce
+                          col.var = habitat_coords$habitat, # Colore delle frecce basato sugli habitat
+                          legend.title = list(color = "Habitat")) +
+  theme_minimal() +
+  labs(title = "PCA Biplot",
+       x = paste0("Dim1 (", round(pca$sdev[1]^2/sum(pca$sdev^2) * 100, 1), "%)"),
+       y = paste0("Dim2 (", round(pca$sdev[2]^2/sum(pca$sdev^2) * 100, 1), "%)"))
+
+# Aggiungere le etichette dei variabili (habitat)
+biplot + geom_text(data = habitat_coords, aes(x = PC1, y = PC2, label = habitat), 
+                   color = "black", 
+                   vjust = -1, 
+                   hjust = -0.5) +
+  scale_color_manual(values = c("Chersnut Grove" = "green", "Ecotone" = "brown", "Grassland" = "orange"))
+
+```
+
+## RDA Colloro
+
+```{r message=FALSE, warning=FALSE}
+PCA_CLL<-read.csv("CLL_NMDS.csv")
+
+dati_specie <- as.matrix(PCA_CLL[, 3:18])
+
+# Esegui la PCA
+pca_result <- rda(dati_specie)
+
+# Visualizza i risultati
+summary(pca_result)
+
+
+# RDA
+
+# Estrai la matrice dei dati delle specie
+dati_specie <- as.matrix(PCA_CLL[, 3:18])
+
+# Prepara i dati ambientali (nome degli habitat)
+dati_ambientali <- as.factor(PCA_CLL[, 1])  # Assicurati che la prima colonna sia il nome degli habitat
+
+# Esegui l'RDA
+rda_result <- rda(dati_specie ~ dati_ambientali)
+
+# Visualizza i risultati
+summary(rda_result)
+
+# Grafico di dispersione degli habitat
+plot(rda_result, display = "sites")
+
+# Grafico di dispersione delle specie
+plot(rda_result, display = "species")
+
+```
+
+```{r message=FALSE, warning=FALSE}
+# Estrai i risultati della PCA
+pca_scores <- scores(pca_result, display = "species")
+pca_vars <- scores(pca_result, display = "sites")
+
+# Crea un biplot per la PCA
+pca_biplot <- ggplot() +
+  geom_point(data = pca_vars, aes(x = PC1, y = PC2), color = "blue", size = 3) +
+  geom_text(data = pca_vars, aes(x = PC1, y = PC2, label = rownames(pca_vars)), hjust = 1.1, vjust = 1.1, size = 3) +
+  geom_point(data = pca_scores, aes(x = PC1, y = PC2), color = "red", size = 3) +
+  geom_text(data = pca_scores, aes(x = PC1, y = PC2, label = rownames(pca_scores)), hjust = -0.1, vjust = -0.1, size = 3) +
+  xlab(paste("PC1 (", round(100 * summary(pca_result)$cont$importance[2, 1], digits = 1), "% variance)")) +
+  ylab(paste("PC2 (", round(100 * summary(pca_result)$cont$importance[2, 2], digits = 1), "% variance)")) +
+  ggtitle("Biplot della PCA") +
+  theme_classic()
+
+# Mostra il biplot della PCA
+print(pca_biplot)
+
+
+
+# RDA
+
+# Estrai i risultati dell'RDA
+rda_scores <- scores(rda_result, display = "sites")
+
+# Crea un grafico di dispersione per l'RDA
+rda_plot <- ggplot(data = rda_scores, aes(x = RDA1, y = RDA2, color = dati_ambientali)) +
+  geom_point(size = 3) +
+  xlab(paste("RDA Axis 1 (", round(100 * rda_result$CA$eig[1]/sum(rda_result$CA$eig), digits = 1), "% variance explained)")) +
+  ylab(paste("RDA Axis 2 (", round(100 * rda_result$CA$eig[2]/sum(rda_result$CA$eig), digits = 1), "% variance explained)")) +
+  ggtitle("Grafico di dispersione per l'RDA") +
+  theme_minimal() +
+  theme(legend.position = "right")
+
+# Mostra il grafico di dispersione per l'RDA
+print(rda_plot)
+
+```
+
+## RDA Cossogno
+
+```{r message=FALSE, warning=FALSE}
+PCA_CSS<-read.csv("CSS_NMDS.csv")
+
+dati_specie2 <- as.matrix(PCA_CSS[, 3:31])
+
+# Esegui la PCA
+pca_result2 <- rda(dati_specie2)
+
+# Visualizza i risultati
+summary(pca_result2)
+
+
+# RDA
+
+# Estrai la matrice dei dati delle specie
+dati_specie2 <- as.matrix(PCA_CSS[, 3:31])
+
+# Prepara i dati ambientali (nome degli habitat)
+dati_ambientali2 <- as.factor(PCA_CSS[, 1])  # Assicurati che la prima colonna sia il nome degli habitat
+
+# Esegui l'RDA
+rda_result2 <- rda(dati_specie2 ~ dati_ambientali2)
+
+# Visualizza i risultati
+summary(rda_result2)
+
+# Grafico di dispersione degli habitat
+plot(rda_result2, display = "sites")
+
+# Grafico di dispersione delle specie
+plot(rda_result2, display = "species")
+
+```
+
+```{r message=FALSE, warning=FALSE}
+# Estrai i risultati della PCA
+pca_scores <- scores(pca_result2, display = "species")
+pca_vars <- scores(pca_result2, display = "sites")
+
+# Crea un biplot per la PCA
+pca_biplot <- ggplot() +
+  geom_point(data = pca_vars, aes(x = PC1, y = PC2), color = "blue", size = 3) +
+  geom_text(data = pca_vars, aes(x = PC1, y = PC2, label = rownames(pca_vars)), hjust = 1.1, vjust = 1.1, size = 3) +
+  geom_point(data = pca_scores, aes(x = PC1, y = PC2), color = "red", size = 3) +
+  geom_text(data = pca_scores, aes(x = PC1, y = PC2, label = rownames(pca_scores)), hjust = -0.1, vjust = -0.1, size = 3) +
+  xlab(paste("PC1 (", round(100 * summary(pca_result2)$cont$importance[2, 1], digits = 1), "% variance)")) +
+  ylab(paste("PC2 (", round(100 * summary(pca_result2)$cont$importance[2, 2], digits = 1), "% variance)")) +
+  ggtitle("Biplot della PCA") +
+  theme_classic()
+
+# Mostra il biplot della PCA
+print(pca_biplot)
+
+
+
+# RDA
+
+# Estrai i risultati dell'RDA
+rda_scores <- scores(rda_result2, display = "sites")
+
+# Crea un grafico di dispersione per l'RDA
+rda_plot <- ggplot(data = rda_scores, aes(x = RDA1, y = RDA2, color = dati_ambientali2)) +
+  geom_point(size = 3) +
+  xlab(paste("RDA Axis 1 (", round(100 * rda_result2$CA$eig[1]/sum(rda_result2$CA$eig), digits = 1), "% variance explained)")) +
+  ylab(paste("RDA Axis 2 (", round(100 * rda_result2$CA$eig[2]/sum(rda_result2$CA$eig), digits = 1), "% variance explained)")) +
+  ggtitle("Grafico di dispersione per l'RDA") +
+  theme_minimal() +
+  theme(legend.position = "right")
+
+# Mostra il grafico di dispersione per l'RDA
+print(rda_plot)
+
 ```
 
 - e n d -
